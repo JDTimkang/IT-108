@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore Membership Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #fff;
+        }
+
+        header {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #f5f5f5;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .main-nav {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            display: flex;
+            gap: 25px;
+            z-index: 10;
+        }
+
+        .main-nav a {
+            color: #c9a668;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .main-nav a:hover, .main-nav a.active {
+            background: rgba(201, 166, 104, 0.15);
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .form-container {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(201, 166, 104, 0.3);
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #aaa;
+            transition: all 0.3s ease;
+            text-align: center;
+            flex: 1;
+        }
+
+        .tab.active {
+            color: #c9a668;
+            border-bottom: 3px solid #c9a668;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #c9a668;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 18px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #c9a668;
+            box-shadow: 0 0 0 2px rgba(201, 166, 104, 0.3);
+        }
+
+        .form-group input::placeholder, .form-group select::placeholder {
+            color: #aaa;
+        }
+
+        .name-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .name-row .form-group {
+            flex: 1;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #c9a668;
+            border: none;
+            border-radius: 8px;
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: #d6b777;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: right;
+            margin-top: 15px;
+            color: #c9a668;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #aaa;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .divider span {
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(201, 166, 104, 0.3);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .form-footer a {
+            color: #c9a668;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+            
+            .name-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Knowledge Haven Bookstore</h1>
+        </div>
+        <nav class="main-nav" id="main-nav">
+            
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <div class="tabs">
+                <div class="tab" id="login-tab">Login</div>
+                <div class="tab active" id="register-tab">Register</div>
+            </div>
+
+            <form id="login-form" style="display: none;">
+                <div class="form-title">Member Login</div>
+                <div class="form-group">
+                    <label for="login-username">Username or Email<span style="color:red">*</span></label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password<span style="color:red">*</span></label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+                <a href="#" class="forgot-link">Forgot Password?</a>
+
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <div class="social-login">
+                    <div class="social-btn">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    Don't have an account? <a href="#" id="go-to-register">Sign Up</a>
+                </div>
+            </form>
+
+            <form id="register-form">
+                <div class="form-title">Create Bookstore Account</div>
+                <div class="name-row">
+                    <div class="form-group">
+                        <label for="first-name">First Name<span style="color:red"> *</span></label>
+                        <input type="text" id="first-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name">Middle Name <span style="color:red">optional</span></label>
+                        <input type="text" id="middle-name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name<span style="color:red"> *</span></label>
+                    <input type="text" id="last-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="id-number">ID Number<span style="color:red"> *</span></label>
+                    <input type="text" id="id-number" placeholder="xxxx-xxxx" required>
+                </div>
+                <div class="name-row">
+                    <div class="form-group">
+                        <label for="birthdate">Birthdate<span style="color:red"> *</span></label>
+                        <input type="date" id="birthdate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age<span style="color:red"> *</span></label>
+                        <input type="number" id="age" min="18" max="100" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Sex<span style="color:red"> *</span></label>
+                        <select id="gender" required>
+                            <option value="" disabled selected>Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address<span style="color:red"> *</span></label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number<span style="color:red">*</span></label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password<span style="color:red"> *</span></label>
+                    <input type="password" id="reg-password" minlength="8" maxlength="32" required>
+                    <input type="checkbox" id="show-reg-password"> <label for="show-reg-password" style="font-size:0.95em;">Show Password</label>
+                    <div id="password-strength" style="margin-top:5px;font-size:0.95em;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password<span style="color:red"> *</span></label>
+                    <input type="password" id="confirm-password" minlength="8" maxlength="32" required>
+                    <input type="checkbox" id="show-confirm-password"> <label for="show-confirm-password" style="font-size:0.95em;">Show Password</label>
+                </div>
+                <div class="form-group">
+                    <label for="membership-type">Membership Type<span style="color:red"> *</span></label>
+                    <select id="membership-type" required>
+                        <option value="" disabled selected>Membership Type</option>
+                        <option value="regular">Regular Member</option>
+                        <option value="premium">Premium Member</option>
+                        <option value="family">Family Membership</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="purok-street">Purok/Street<span style="color:red"> *</span></label>
+                    <input type="text" id="purok-street" required>
+                </div>
+                <div class="form-group">
+                    <label for="barangay">Barangay<span style="color:red">*</span></label>
+                    <input type="text" id="barangay" required>
+                </div>
+                <div class="form-group">
+                    <label for="municipal-city">Municipal/City<span style="color:red">*</span></label>
+                    <input type="text" id="municipal-city" required>
+                </div>
+                <div class="form-group">
+                    <label for="province">Province<span style="color:red">*</span></label>
+                    <input type="text" id="province" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country<span style="color:red">*</span></label>
+                    <input type="text" id="country" required>
+                </div>
+                <div class="form-group">
+                    <label for="zip-code">Zip Code<span style="color:red">*</span></label>
+                    <input type="text" id="zip-code" required maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="auth-q1">Who is your best friend in Elementary?<span style="color:red">*</span></label>
+                    <input type="text" id="auth-q1" required>
+                </div>
+                <div class="form-group">
+                    <label for="auth-q2">What is the name of your favorite pet?<span style="color:red">*</span></label>
+                    <input type="text" id="auth-q2" required>
+                </div>
+                <div class="form-group">
+                    <label for="auth-q3">Who is your favorite teacher in high school?<span style="color:red">*</span></label>
+                    <input type="text" id="auth-q3" required>
+                </div>
+                <button type="submit" class="btn">Create Account</button>
+
+                <div class="divider">
+                    <span>Or sign up with</span>
+                </div>
+
+                <div class="social-login">
+                    <div class="social-btn">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    Already have an account? <a href="#" id="go-to-login">Sign In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">
+                &copy; Knowledge Haven Bookstore All rights reserved 2025.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+       
+        function renderNav(state) {
+            const nav = document.getElementById('main-nav');
+            let html = '';
+            if (state === 'login') {
+                html = '<a href="#" id="nav-home">Home</a>' +
+                       '<a href="#" id="nav-register">Register</a>';
+            } else if (state === 'register') {
+                html = '<a href="#" id="nav-home">Home</a>' +
+                       '<a href="#" id="nav-login">Log-in</a>';
+            } else if (state === 'loggedin') {
+                html = '<a href="#" id="nav-home">Home</a>' +
+                       '<a href="#" id="nav-logout">Log-out</a>';
+            }
+            nav.innerHTML = html;
+            if (document.getElementById('nav-home')) {
+                document.getElementById('nav-home').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLogin();
+                    renderNav('login');
+                });
+            }
+            if (document.getElementById('nav-register')) {
+                document.getElementById('nav-register').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showRegister();
+                    renderNav('register');
+                });
+            }
+            if (document.getElementById('nav-login')) {
+                document.getElementById('nav-login').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showLogin();
+                    renderNav('login');
+                });
+            }
+            if (document.getElementById('nav-logout')) {
+                document.getElementById('nav-logout').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('You have been logged out.');
+                    showLogin();
+                    renderNav('login');
+                });
+            }
+        }
+
+        
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const goToRegister = document.getElementById('go-to-register');
+        const goToLogin = document.getElementById('go-to-login');
+
+        function showLogin() {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            renderNav('login');
+        }
+
+        function showRegister() {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.style.display = 'block';
+            loginForm.style.display = 'none';
+            renderNav('register');
+        }
+
+        loginTab.addEventListener('click', showLogin);
+        registerTab.addEventListener('click', showRegister);
+        goToRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            showRegister();
+        });
+        goToLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            showLogin();
+        });
+
+      
+        showRegister();
+
+        
+        let loginErrorCount = 0;
+        let loginLockoutTime = 0;
+        let loginLockoutTimer = null;
+        function setLoginLockout(seconds) {
+            loginLockoutTime = seconds;
+            let errorMsg = document.getElementById('login-error');
+            if (!errorMsg) {
+                errorMsg = document.createElement('div');
+                errorMsg.id = 'login-error';
+                errorMsg.style.color = 'red';
+                loginForm.insertBefore(errorMsg, loginForm.firstChild);
+            }
+            errorMsg.textContent = `Access denied for ${seconds} seconds due to multiple failed login attempts.`;
+            loginForm.querySelector('button[type="submit"]').disabled = true;
+            loginLockoutTimer = setTimeout(() => {
+                loginLockoutTime = 0;
+                loginForm.querySelector('button[type="submit"]').disabled = false;
+                errorMsg.textContent = '';
+            }, seconds * 1000);
+        }
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (loginLockoutTime > 0) return;
+            
+            const users = [
+                { username: 'user1', password: CryptoJS.SHA256('pass1').toString() },
+                { username: 'user2', password: CryptoJS.SHA256('pass2').toString() }
+            ];
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const hashedPassword = CryptoJS.SHA256(password).toString();
+            let errorMsg = document.getElementById('login-error');
+            if (!errorMsg) {
+                errorMsg = document.createElement('div');
+                errorMsg.id = 'login-error';
+                errorMsg.style.color = 'red';
+                loginForm.insertBefore(errorMsg, loginForm.firstChild);
+            }
+            errorMsg.textContent = '';
+            const found = users.find(u => u.username === username && u.password === hashedPassword);
+            if (!found) {
+                loginErrorCount++;
+                if (loginErrorCount === 3) {
+                    setLoginLockout(15);
+                } else if (loginErrorCount === 6) {
+                    setLoginLockout(30);
+                } else if (loginErrorCount === 9) {
+                    setLoginLockout(60);
+                } else {
+                    errorMsg.textContent = 'Error: Username and password do not match.';
+                }
+                return;
+            }
+            loginErrorCount = 0;
+            if (loginLockoutTimer) clearTimeout(loginLockoutTimer);
+            alert('Login successful!');
+            renderNav('loggedin');
+        });
+
+        let consecutiveErrors = 0;
+        function showForgotPasswordLink() {
+            let forgotDiv = document.getElementById('forgot-reset-link');
+            if (!forgotDiv) {
+                forgotDiv = document.createElement('div');
+                forgotDiv.id = 'forgot-reset-link';
+                forgotDiv.innerHTML = '<a href="#" style="color:#c9a668;text-decoration:underline;">Forgot Password? Reset Here</a>';
+                registerForm.appendChild(forgotDiv);
+            }
+            forgotDiv.style.display = 'block';
+        }
+        function hideForgotPasswordLink() {
+            let forgotDiv = document.getElementById('forgot-reset-link');
+            if (forgotDiv) forgotDiv.style.display = 'none';
+        }
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            hideForgotPasswordLink();
+           
+            const nameFields = [
+                { id: 'first-name', label: 'First Name' },
+                { id: 'middle-name', label: 'Middle Name' },
+                { id: 'last-name', label: 'Last Name' },
+                { id: 'extension', label: 'Extension' }
+            ];
+            let nameError = document.getElementById('name-error');
+            if (!nameError) {
+                nameError = document.createElement('div');
+                nameError.id = 'name-error';
+                nameError.style.color = 'red';
+                registerForm.insertBefore(nameError, registerForm.firstChild);
+            }
+            nameError.textContent = '';
+            const specialCharPattern = /[^a-zA-Z\s]/;
+            const numberFollowedByLetterPattern = /\d+[a-zA-Z]/;
+            const doubleSpacePattern = /  /;
+            const allCapsPattern = /^[A-Z\s]+$/;
+            const tripleLetterPattern = /(\w)\1\1/i;
+            for (const field of nameFields) {
+                const input = document.getElementById(field.id);
+                // Extension is optional, skip if empty
+                if (field.id === 'extension' && input && input.value.trim() === '') continue;
+                const value = input ? input.value.trim() : '';
+                if (input && input.hasAttribute('required') && value === '') {
+                    nameError.textContent = `${field.label}: This field is required.`;
+                    input.focus();
+                    return;
+                }
+                if (input && input.hasAttribute('minlength') && value.length < input.getAttribute('minlength')) {
+                    nameError.textContent = `${field.label}: '${value}' — must be at least ${input.getAttribute('minlength')} characters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && input.hasAttribute('maxlength') && value.length > input.getAttribute('maxlength')) {
+                    nameError.textContent = `${field.label}: '${value}' — must be at most ${input.getAttribute('maxlength')} characters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && specialCharPattern.test(value)) {
+                    nameError.textContent = `${field.label}: '${value}' — must not contain special characters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && numberFollowedByLetterPattern.test(value)) {
+                    nameError.textContent = `${field.label}: '${value}' — must not contain numbers followed by letters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && doubleSpacePattern.test(value)) {
+                    nameError.textContent = `${field.label}: '${value}' — must not contain double spaces.`;
+                    input.focus();
+                    return;
+                }
+                if (input && allCapsPattern.test(value) && value !== '') {
+                    nameError.textContent = `${field.label}: '${value}' — must not be all capital letters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && tripleLetterPattern.test(value)) {
+                    nameError.textContent = `${field.label}: '${value}' — must not contain three consecutive identical letters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && value !== '' && !onlyLettersPattern.test(value)) {
+                    nameError.textContent = `${field.label}: '${value}' — must contain only letters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && value !== '' && !isProperCapitalization(value)) {
+                    nameError.textContent = `${field.label}: '${value}' — First letter of each word must be capital, others lowercase.`;
+                    input.focus();
+                    return;
+                }
+            }
+           
+            const onlyLettersPattern = /^[a-zA-Z\s]+$/;
+            for (const field of nameFields) {
+                const input = document.getElementById(field.id);
+                if (input && input.value.trim() !== '' && !onlyLettersPattern.test(input.value)) {
+                    nameError.textContent = field.label + ' must contain only letters.';
+                    input.focus();
+                    return;
+                }
+            }
+           
+            function isProperCapitalization(str) {
+                return str.trim().split(/\s+/).every(word => /^[A-Z][a-z]+$/.test(word));
+            }
+            for (const field of nameFields) {
+                const input = document.getElementById(field.id);
+                if (input && input.value.trim() !== '' && !isProperCapitalization(input.value.trim())) {
+                    nameError.textContent = field.label + ' must start each word with a capital letter, followed by lowercase letters.';
+                    input.focus();
+                    return;
+                }
+            }
+          
+            const addressFields = [
+                { id: 'purok-street', label: 'Purok/Street' },
+                { id: 'barangay', label: 'Barangay' },
+                { id: 'municipal-city', label: 'Municipal/City' },
+                { id: 'province', label: 'Province' },
+                { id: 'country', label: 'Country' }
+            ];
+            let addressError = document.getElementById('address-error');
+            if (!addressError) {
+                addressError = document.createElement('div');
+                addressError.id = 'address-error';
+                addressError.style.color = 'red';
+                registerForm.insertBefore(addressError, registerForm.firstChild);
+            }
+            addressError.textContent = '';
+            const addressPattern = /^[A-Za-z\s\.\-]+$/;
+            const zipCodePattern = /^[0-9]{4,10}$/;
+            const zipCodeInput = document.getElementById('zip-code');
+            for (const field of addressFields) {
+                const input = document.getElementById(field.id);
+                const value = input ? input.value.trim() : '';
+                if (input && input.hasAttribute('required') && value === '') {
+                    addressError.textContent = `${field.label}: This field is required.`;
+                    input.focus();
+                    return;
+                }
+                if (input && input.hasAttribute('minlength') && value.length < input.getAttribute('minlength')) {
+                    addressError.textContent = `${field.label}: '${value}' — must be at least ${input.getAttribute('minlength')} characters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && input.hasAttribute('maxlength') && value.length > input.getAttribute('maxlength')) {
+                    addressError.textContent = `${field.label}: '${value}' — must be at most ${input.getAttribute('maxlength')} characters.`;
+                    input.focus();
+                    return;
+                }
+                if (input && !addressPattern.test(value)) {
+                    addressError.textContent = `${field.label}: '${value}' — must start with a capital letter and contain only letters, spaces, dot, or dash.`;
+                    input.focus();
+                    return;
+                }
+            }
+            if (zipCodeInput) {
+                const zipValue = zipCodeInput.value.trim();
+                if (zipCodeInput.hasAttribute('required') && zipValue === '') {
+                    addressError.textContent = `Zip Code: This field is required.`;
+                    zipCodeInput.focus();
+                    return;
+                }
+                if (zipCodeInput.hasAttribute('minlength') && zipValue.length < zipCodeInput.getAttribute('minlength')) {
+                    addressError.textContent = `Zip Code: '${zipValue}' — must be at least ${zipCodeInput.getAttribute('minlength')} digits.`;
+                    zipCodeInput.focus();
+                    return;
+                }
+                if (zipCodeInput.hasAttribute('maxlength') && zipValue.length > zipCodeInput.getAttribute('maxlength')) {
+                    addressError.textContent = `Zip Code: '${zipValue}' — must be at most ${zipCodeInput.getAttribute('maxlength')} digits.`;
+                    zipCodeInput.focus();
+                    return;
+                }
+                if (!zipCodePattern.test(zipValue)) {
+                    addressError.textContent = `Zip Code: '${zipValue}' — must contain only numbers (4-10 digits).`;
+                    zipCodeInput.focus();
+                    return;
+                }
+            }
+            
+            const existingIDs = ['1234-5678', '0000-1111', '9999-8888'];
+            const idInput = document.getElementById('id-number');
+            const idValue = idInput.value.trim();
+            let errorMsg = document.getElementById('id-error');
+            if (!errorMsg) {
+                errorMsg = document.createElement('div');
+                errorMsg.id = 'id-error';
+                errorMsg.style.color = 'red';
+                idInput.parentNode.appendChild(errorMsg);
+            }
+            errorMsg.textContent = '';
+            if (idInput.hasAttribute('required') && idValue === '') {
+                errorMsg.textContent = `ID Number: This field is required.`;
+                idInput.focus();
+                return;
+            }
+            if (idInput.hasAttribute('minlength') && idValue.length < idInput.getAttribute('minlength')) {
+                errorMsg.textContent = `ID Number: '${idValue}' — must be at least ${idInput.getAttribute('minlength')} characters.`;
+                idInput.focus();
+                return;
+            }
+            if (idInput.hasAttribute('maxlength') && idValue.length > idInput.getAttribute('maxlength')) {
+                errorMsg.textContent = `ID Number: '${idValue}' — must be at most ${idInput.getAttribute('maxlength')} characters.`;
+                idInput.focus();
+                return;
+            }
+            if (existingIDs.includes(idValue)) {
+                errorMsg.textContent = `ID Number: '${idValue}' — already exists.`;
+                idInput.focus();
+                return;
+            }
+            const phoneInput = document.getElementById('phone');
+            const onlyNumbersPattern = /^[0-9\-]+$/;
+            let phoneError = document.getElementById('phone-error');
+            if (!phoneError) {
+                phoneError = document.createElement('div');
+                phoneError.id = 'phone-error';
+                phoneError.style.color = 'red';
+                phoneInput.parentNode.appendChild(phoneError);
+            }
+            phoneError.textContent = '';
+            if (phoneInput.hasAttribute('required') && phoneInput.value.trim() === '') {
+                phoneError.textContent = `Phone Number: This field is required.`;
+                phoneInput.focus();
+                return;
+            }
+            if (phoneInput.hasAttribute('minlength') && phoneInput.value.trim().length < phoneInput.getAttribute('minlength')) {
+                phoneError.textContent = `Phone Number: '${phoneInput.value.trim()}' — must be at least ${phoneInput.getAttribute('minlength')} characters.`;
+                phoneInput.focus();
+                return;
+            }
+            if (phoneInput.hasAttribute('maxlength') && phoneInput.value.trim().length > phoneInput.getAttribute('maxlength')) {
+                phoneError.textContent = `Phone Number: '${phoneInput.value.trim()}' — must be at most ${phoneInput.getAttribute('maxlength')} characters.`;
+                phoneInput.focus();
+                return;
+            }
+            if (phoneInput.value.trim() !== '' && !onlyNumbersPattern.test(phoneInput.value)) {
+                phoneError.textContent = `Phone Number: '${phoneInput.value.trim()}' — must contain only numbers and dashes.`;
+                phoneInput.focus();
+                return;
+            }
+            
+            const ageInput = document.getElementById('age');
+            if (ageInput.value === '' || parseInt(ageInput.value) < 18) {
+                let ageError = document.getElementById('age-error');
+                if (!ageError) {
+                    ageError = document.createElement('div');
+                    ageError.id = 'age-error';
+                    ageError.style.color = 'red';
+                    ageInput.parentNode.appendChild(ageError);
+                }
+                ageError.textContent = `Age: '${ageInput.value}' — Only legal age (18 and above) is allowed.`;
+                ageInput.focus();
+                return;
+            } else {
+                let ageError = document.getElementById('age-error');
+                if (ageError) ageError.textContent = '';
+            }
+            
+            const passwordInput = document.getElementById('reg-password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            let confirmError = document.getElementById('confirm-error');
+            if (!confirmError) {
+                confirmError = document.createElement('div');
+                confirmError.id = 'confirm-error';
+                confirmError.style.color = 'red';
+                confirmPasswordInput.parentNode.appendChild(confirmError);
+            }
+            confirmError.textContent = '';
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                confirmError.textContent = `Password: '${passwordInput.value}' and Confirm Password: '${confirmPasswordInput.value}' — do not match.`;
+                confirmPasswordInput.focus();
+                return;
+            }
+            
+            const existingUsernames = ['user1', 'user2', 'admin'];
+            const usernameInput = document.getElementById('first-name'); 
+            let usernameError = document.getElementById('username-error');
+            if (!usernameError) {
+                usernameError = document.createElement('div');
+                usernameError.id = 'username-error';
+                usernameError.style.color = 'red';
+                usernameInput.parentNode.appendChild(usernameError);
+            }
+            usernameError.textContent = '';
+            if (existingUsernames.includes(usernameInput.value.trim().toLowerCase())) {
+                usernameError.textContent = `Username: '${usernameInput.value.trim()}' — already exists.`;
+                usernameInput.focus();
+                return;
+            }
+           
+            const password = document.getElementById('reg-password').value;
+            const hashedPassword = CryptoJS.SHA256(password).toString();
+            alert('Password will be stored as hash: ' + hashedPassword + '\nRegistration functionality would be implemented here.');
+        });
+
+        document.getElementById('birthdate').addEventListener('change', function() {
+            const birthdate = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthdate.getFullYear();
+            const m = today.getMonth() - birthdate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
+                age--;
+            }
+            document.getElementById('age').value = age > 0 ? age : '';
+        });
+
+        function getPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            if (strength <= 2) return 'Weak';
+            if (strength === 3 || strength === 4) return 'Medium';
+            if (strength === 5) return 'Strong';
+        }
+        document.getElementById('reg-password').addEventListener('input', function() {
+            const pwd = this.value;
+            const strength = getPasswordStrength(pwd);
+            const strengthDiv = document.getElementById('password-strength');
+            if (!pwd) {
+                strengthDiv.textContent = '';
+                strengthDiv.style.color = '';
+                return;
+            }
+            strengthDiv.textContent = 'Password Strength: ' + strength;
+            if (strength === 'Weak') strengthDiv.style.color = 'red';
+            else if (strength === 'Medium') strengthDiv.style.color = 'orange';
+            else strengthDiv.style.color = 'green';
+        });
+
+       
+        const extensionInput = document.getElementById('extension');
+        if (extensionInput && extensionInput.value.trim() !== '') {
+            
+            const extensionValue = extensionInput.value.trim();
+            const extensionIsOther = ['I', 'II', 'IX', 'X'].includes(extensionValue);
+           
+        }
+
+      
+        history.pushState(null, '', location.href);
+        window.addEventListener('popstate', function(event) {
+            history.pushState(null, '', location.href);
+        });
+
+        document.getElementById('show-reg-password').addEventListener('change', function() {
+            const pwdInput = document.getElementById('reg-password');
+            pwdInput.type = this.checked ? 'text' : 'password';
+        });
+        document.getElementById('show-confirm-password').addEventListener('change', function() {
+            const confirmInput = document.getElementById('confirm-password');
+            confirmInput.type = this.checked ? 'text' : 'password';
+        });
+    </script>
+</body>
+</html>
